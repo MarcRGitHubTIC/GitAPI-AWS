@@ -3,13 +3,23 @@ from db import get_db_connection
 from models import Pokemon, PokemonUpdate
 from typing import Optional, List
 
-DELAY_TIME=3
-
 app = FastAPI()
 
-@app.get("/")
-def home():
-    return {"message": "API PokeAPI en AWS"}
+DELAY_TIME=3
+
+# Modelo Pydantic para validación de datos
+class Pokemon(BaseModel):
+    numero_pokedex: int
+    imagen: str
+    nombre: str
+    tipo1: str
+    tipo2: Optional[str] = None
+    
+class PokemonUpdate(BaseModel):
+    imagen: Optional[str] = None
+    nombre: Optional[str] = None
+    tipo1: Optional[str] = None
+    tipo2: Optional[str] = None
 
 # Obtener todos los Pokémon
 @app.get("/pokemons", response_model=List[Pokemon])
